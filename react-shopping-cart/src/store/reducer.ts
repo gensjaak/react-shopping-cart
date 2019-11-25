@@ -6,13 +6,18 @@ import {
   REMOVE_PRODUCT_FROM_CART,
   IRemoveProductFromCartAction,
 } from './actions'
-import { StoreState } from './types'
+import { StoreState, Product } from './types'
 
 const initialState: StoreState = {
   products: [],
   cart: {
     items: [],
-    taxes: [],
+    taxes: [
+      {
+        name: 20,
+        value: 20,
+      },
+    ],
     totalAmountIncludingTaxes: 0,
   },
 }
@@ -30,14 +35,14 @@ const reducer = (
             id: 0,
             name: 'Product A',
             description: 'Lorem ipsum dolor sit, amet consectetur',
-            price: 12,
+            price: 100,
             tax: 20,
           },
           {
             id: 1,
             name: 'Product B',
             description: 'Lorem ipsum dolor sit, amet consectetur',
-            price: 13,
+            price: 100,
             tax: 5.5,
           },
         ],
@@ -59,10 +64,25 @@ const reducer = (
         updatedItems.push(addAction.payload)
       }
 
+      let totalAmountIncludingTaxes = 0
+      updatedItems.forEach(_ => {
+        const product = state.products.find(
+          __ => __.id === _.productId
+        ) as Product
+
+        totalAmountIncludingTaxes += product.price
+      })
+
+      state.cart.taxes.forEach(_ => {
+        totalAmountIncludingTaxes =
+          totalAmountIncludingTaxes * (1 + _.value / 100)
+      })
+
       return {
         ...state,
         cart: {
           ...state.cart,
+          totalAmountIncludingTaxes,
           items: updatedItems,
         },
       }

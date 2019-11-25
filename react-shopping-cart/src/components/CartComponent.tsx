@@ -15,8 +15,8 @@ class CartComponent extends Component<CartProps> {
     super(props)
   }
 
-  getProductName(productId: number): string {
-    return (this.props.products.find(_ => _.id === productId) as Product).name
+  getProduct(productId: number): Product {
+    return this.props.products.find(_ => _.id === productId) as Product
   }
 
   render() {
@@ -32,7 +32,8 @@ class CartComponent extends Component<CartProps> {
           <List>
             {items.map(_ => (
               <List.Item key={_.productId}>
-                {_.qte} × {this.getProductName(_.productId)}
+                {_.qte} × {this.getProduct(_.productId).name} (PU:{' '}
+                {this.getProduct(_.productId).price}€)
                 <br />
                 <Button
                   plain
