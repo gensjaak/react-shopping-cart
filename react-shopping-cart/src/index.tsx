@@ -3,12 +3,16 @@ import ReactDOM from 'react-dom'
 import { AppProvider } from '@shopify/polaris'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import store from './store'
+import { Provider } from 'react-redux'
 
 ReactDOM.render(
-  <AppProvider>
-    <App />
-  </AppProvider>,
-  document.getElementById('root'),
+  <Provider store={store}>
+    <AppProvider>
+      <App />
+    </AppProvider>
+  </Provider>,
+  document.getElementById('root')
 )
 
 // If you want your app to work offline and load faster, you can change
