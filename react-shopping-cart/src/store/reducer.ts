@@ -5,6 +5,7 @@ import {
   AppActions,
   REMOVE_PRODUCT_FROM_CART,
   IRemoveProductFromCartAction,
+  EMPTY_CART,
 } from './actions'
 import { StoreState, ProductType } from './types'
 
@@ -118,6 +119,18 @@ const reducer = (
           items: newItems,
         },
       }
+
+    // Empty the cart simply
+    case EMPTY_CART:
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          items: [],
+          totalAmountIncludingTaxes: 0,
+        },
+      }
+
     default:
       return state
   }
