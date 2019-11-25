@@ -1,24 +1,22 @@
 import React, { Component } from 'react'
 import { Avatar, TextStyle, ResourceList, ResourceItem } from '@shopify/polaris'
+import { ProductType } from '../store/types'
 
-interface ProductItemProps {
-  _: {
-    id: number
-    name: string
-    description: string
-    price: number
-    tax: number
-  }
+// Required props to render component
+interface Props {
+  // The main product to show
+  _: ProductType
+
+  // A method to handle add to cart request
   onAddToCart: (productId: number, qte: number) => void
 }
 
-export default class ProductItem extends Component<ProductItemProps> {
-  constructor(props: ProductItemProps) {
-    super(props)
-  }
-
+export default class ProductItem extends Component<Props, {}> {
   render() {
+    // Get needed properties from main product object
     const { id, name, description } = this.props._
+
+    // Get needed method
     const { onAddToCart } = this.props
 
     const media = <Avatar customer size="medium" name={name} />

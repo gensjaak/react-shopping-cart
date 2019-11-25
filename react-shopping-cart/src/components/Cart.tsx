@@ -1,25 +1,29 @@
 import React, { Component, Dispatch } from 'react'
 import { Card, List, Button } from '@shopify/polaris'
 import { connect } from 'react-redux'
-import { Cart, StoreState, Product } from '../store/types'
+import { CartType, StoreState, ProductType } from '../store/types'
 import { removeProductFromCart } from '../store/actions'
 
-interface CartProps {
-  cart: Cart
-  products: Product[]
+// Required props to render component
+interface Props {
+  // Products in cart
+  cart: CartType
+
+  // All products
+  products: ProductType[]
+
+  // Method to handle remove product request
   removeProductFromCart: (productId: number) => void
 }
 
-class CartComponent extends Component<CartProps> {
-  constructor(props: CartProps) {
-    super(props)
-  }
-
-  getProduct(productId: number): Product {
-    return this.props.products.find(_ => _.id === productId) as Product
+class Cart extends Component<Props, {}> {
+  // Based on an ID, returns the correct product
+  getProduct(productId: number): ProductType {
+    return this.props.products.find(_ => _.id === productId) as ProductType
   }
 
   render() {
+    // Retrieve needed properties
     const { items, taxes, totalAmountIncludingTaxes } = this.props.cart
 
     return (
@@ -28,6 +32,7 @@ class CartComponent extends Component<CartProps> {
         secondaryFooterActions={[{ content: 'Cancel cart' }]}
         primaryFooterAction={{ content: 'Pay' }}
       >
+        {/* List of cart products */}
         <Card.Section title="Items">
           <List>
             {items.map(_ => (
@@ -46,6 +51,8 @@ class CartComponent extends Component<CartProps> {
             ))}
           </List>
         </Card.Section>
+
+        {/* Totals */}
         <Card.Section title="Totals">
           <List>
             {taxes.map(tax => (
@@ -61,15 +68,16 @@ class CartComponent extends Component<CartProps> {
   }
 }
 
-const mapStateToProps = (state: StoreState) => {
-  return {
-    products: state.products,
-    cart: state.cart,
-  }
-}
+// Make products and cart (from store) available under props
+const mapStateToProps = (state: StoreState) => ({
+  products: state.products,
+  cart: state.cart,
+})
+
+// Make remove product action (from store) avaible under props
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   removeProductFromCart: (productId: number) =>
     dispatch(removeProductFromCart(productId)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)

@@ -6,8 +6,9 @@ import {
   REMOVE_PRODUCT_FROM_CART,
   IRemoveProductFromCartAction,
 } from './actions'
-import { StoreState, Product } from './types'
+import { StoreState, ProductType } from './types'
 
+// Initial state of store
 const initialState: StoreState = {
   products: [],
   cart: {
@@ -27,6 +28,7 @@ const reducer = (
   action: AppActions
 ): StoreState => {
   switch (action.type) {
+    // Fetch products
     case FETCH_PRODUCTS:
       return {
         ...state,
@@ -48,7 +50,10 @@ const reducer = (
         ],
       }
 
+    // Add a product to the cart
     case ADD_PRODUCT_TO_CART:
+      // If the product was already in the cart => inc(qte)
+      // Else add it
       const addAction = action as IAddProductToCartAction
       let alreadyInCart = false
       const updatedItems = [...state.cart.items].map(_ => {
@@ -64,15 +69,19 @@ const reducer = (
         updatedItems.push(addAction.payload)
       }
 
+      // Calculate the totals
+      // Not sure this is the right way to calculate it
       let totalAmountIncludingTaxes = 0
       updatedItems.forEach(_ => {
         const product = state.products.find(
           __ => __.id === _.productId
-        ) as Product
+        ) as ProductType
 
         totalAmountIncludingTaxes += product.price
       })
 
+      // Apply the taxes
+      // Not sure this is the right way to calculate it
       state.cart.taxes.forEach(_ => {
         totalAmountIncludingTaxes =
           totalAmountIncludingTaxes * (1 + _.value / 100)
@@ -87,7 +96,10 @@ const reducer = (
         },
       }
 
+    // Remove a product from the cart
     case REMOVE_PRODUCT_FROM_CART:
+      // dec product quantity in the cart
+      // If, after that, the quantity is lower or eq to 0, remove it
       const removeAction = action as IRemoveProductFromCartAction
       const newItems = [...state.cart.items]
         .map(_ => {

@@ -1,7 +1,4 @@
-import { Dispatch } from 'react'
-import { IFetchProductsAction } from './actions'
-
-export interface Product {
+export interface ProductType {
   id: number
   name: string
   description: string
@@ -9,23 +6,23 @@ export interface Product {
   tax: number
 }
 
-export interface CartProduct {
+export interface CartProductType {
   productId: number
   qte: number
 }
 
-export interface Taxe {
+export interface TaxeType {
   name: number
   value: number
 }
 
-export interface Cart {
-  items: Array<CartProduct>
-  taxes: Array<Taxe>
+export interface CartType {
+  items: Array<CartProductType>
+  taxes: Array<TaxeType>
   totalAmountIncludingTaxes: number
 }
 
 export interface StoreState {
-  products: Array<Product>
-  cart: Cart
+  products: Array<ProductType>
+  cart: CartType
 }
