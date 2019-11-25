@@ -22,6 +22,9 @@ interface Props {
   // All products
   products: ProductType[]
 
+  // Allows cart to persist items
+  allowCache: boolean
+
   // Method to handle remove product request
   removeProductFromCart: (productId: number) => void
 
@@ -36,7 +39,7 @@ class Cart extends Component<Props, {}> {
   constructor(props: Props) {
     super(props)
 
-    this.fetchPersistedCartItems()
+    if (this.props.allowCache) this.fetchPersistedCartItems()
   }
 
   fetchPersistedCartItems() {
@@ -77,8 +80,11 @@ class Cart extends Component<Props, {}> {
             <List>
               {items.map(_ => (
                 <List.Item key={_.productId}>
-                  {_.qte} × {this.getProduct(_.productId).name} (PU:{' '}
-                  {this.getProduct(_.productId).price}€)
+                  <em>{_.qte}</em> ×{' '}
+                  <strong>{this.getProduct(_.productId).name}</strong>
+                  <br />
+                  Unit price:{' '}
+                  <strong>{this.getProduct(_.productId).price}€</strong>
                   <br />
                   <Button
                     plain
@@ -102,7 +108,9 @@ class Cart extends Component<Props, {}> {
                   TVA {tax.name}% : {tax.value.toFixed(2)}€
                 </List.Item>
               ))}
-              <List.Item>{totalAmountIncludingTaxes.toFixed(2)}€ TTC</List.Item>
+              <List.Item>
+                <strong>{totalAmountIncludingTaxes.toFixed(2)}€ TTC</strong>
+              </List.Item>
             </List>
           </Card.Section>
         </Card>

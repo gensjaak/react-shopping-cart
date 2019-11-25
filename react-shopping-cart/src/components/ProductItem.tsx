@@ -19,7 +19,7 @@ export default class ProductItem extends Component<Props, {}> {
     // Get needed method
     const { onAddToCart } = this.props
 
-    const media = <Avatar customer size="medium" name={name} />
+    const media = <Avatar customer size="small" name={name} />
     const shortcutActions = [
       {
         content: 'Add to cart(+1)',

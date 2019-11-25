@@ -9,6 +9,7 @@ import { addProductToCart } from '../store/actions'
 // Required props by Catalogue to render
 interface Props {
   products: ProductType[]
+  searchable: boolean
 }
 
 // Represent the state of Catalogue
@@ -79,7 +80,7 @@ class Catalogue extends Component<Props & Actions, State> {
             plural: 'products',
           }}
           items={filteredProducts}
-          filterControl={filterControl}
+          filterControl={this.props.searchable ? filterControl : null}
           renderItem={item => (
             <ProductItem
               _={item}

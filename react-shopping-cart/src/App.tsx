@@ -28,12 +28,12 @@ class App extends Component<Props, {}> {
         <Layout>
           {/* Liste des produits */}
           <Layout.Section>
-            <Catalogue />
+            <Catalogue searchable={true} />
           </Layout.Section>
 
           {/* Panier */}
           <Layout.Section secondary>
-            <Cart />
+            <Cart allowCache={true} />
           </Layout.Section>
         </Layout>
       </Page>

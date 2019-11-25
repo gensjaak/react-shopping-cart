@@ -61,18 +61,53 @@ const reducer = (
         ...state,
         products: [
           {
-            id: 0,
-            name: 'Product A',
-            description: 'Lorem ipsum dolor sit, amet consectetur',
-            price: 15,
-            tax: 20,
+            id: 1,
+            name: 'Xiaomi Redmi Note 7 4Go 64Go Bleu Smartphone',
+            description:
+              'Double Caméra arrière 48 MP avec IA - Écran 6.3" avec encoche en forme de goutte.',
+            price: 156.8,
+            tax: 0,
           },
           {
-            id: 1,
-            name: 'Product B',
-            description: 'Lorem ipsum dolor sit, amet consectetur',
-            price: 29,
-            tax: 5.5,
+            id: 3,
+            name: 'Pocophone F1 Dual SIM 128GB 6GB RAM Noir',
+            description:
+              'Ecran: Type: IPS LCD écran tactile capacitif, 16 millions de couleurs Taille: 6.18 inches, 96.2 cm2',
+            price: 295.0,
+            tax: 0,
+          },
+
+          {
+            id: 5,
+            name: 'Apple iPhone 8 - 64 Go - Or',
+            description:
+              "Un design tout de verre vêtu. L'appareil photo encore amélioré. La puce plus puissante et plus intelligente. Résolution de l'appareil photo arrière: 12 MP",
+            price: 408.0,
+            tax: 0,
+          },
+          {
+            id: 6,
+            name: 'Apple iPhone 11 - 64 Go - Noir',
+            description:
+              "Conçu pour élargir vos horizons, l'iPhone 11 d'Apple vous séduira en un rien de temps. Arborant des matériaux de haute qualité. Résolution de l'appareil photo arrière: 12 MP",
+            price: 687.99,
+            tax: 0,
+          },
+          {
+            id: 7,
+            name: 'Apple iPhone 11 Pro - 64 Go - Gris sidéral',
+            description:
+              "Appareils photo. Écran. Performances. Tout d’un Pro. Tout nouveau triple appareil photo ultra grand‐angle, grand‐angle. Reconnaissance faciale. Lecteur d'empreintes digitales",
+            price: 589.9,
+            tax: 0,
+          },
+          {
+            id: 10,
+            name: 'Huawei P30 Pro - Double SIM - 128 Go - Noir',
+            description:
+              "Faites un zoom avant pour explorer le mystère de la nuit céleste, observez un aigle au-dessus des arbres ou examinez les fins. Résolution de l'appareil photo arrière: 40 MP. 4G LTE",
+            price: 149,
+            tax: 0,
           },
         ],
       }
