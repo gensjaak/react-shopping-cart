@@ -1,8 +1,18 @@
 import React, { Component, Dispatch } from 'react'
 import { Card, List, Button, DisplayText } from '@shopify/polaris'
 import { connect } from 'react-redux'
-import { CartType, StoreState, ProductType } from '../store/types'
-import { removeProductFromCart, emptyCart } from '../store/actions'
+import {
+  CartType,
+  StoreState,
+  ProductType,
+  CartProductType,
+} from '../store/types'
+import {
+  removeProductFromCart,
+  emptyCart,
+  addProductToCart,
+} from '../store/actions'
+import { getItem, CART_STORAGE_KEY } from '../storage'
 
 // Required props to render component
 interface Props {
@@ -15,11 +25,30 @@ interface Props {
   // Method to handle remove product request
   removeProductFromCart: (productId: number) => void
 
+  // Add a product to the cart
+  addProductToCart: (productId: number, qte: number) => void
+
   // Method to handle cart cancel request
   emptyCart: () => void
 }
 
 class Cart extends Component<Props, {}> {
+  constructor(props: Props) {
+    super(props)
+
+    this.fetchPersistedCartItems()
+  }
+
+  fetchPersistedCartItems() {
+    const items = JSON.parse(
+      getItem(CART_STORAGE_KEY) || '[]'
+    ) as CartProductType[]
+
+    items.forEach(_ => {
+      this.props.addProductToCart(_.productId, _.qte)
+    })
+  }
+
   // Based on an ID, returns the correct product
   getProduct(productId: number): ProductType {
     return this.props.products.find(_ => _.id === productId) as ProductType
@@ -99,6 +128,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   removeProductFromCart: (productId: number) =>
     dispatch(removeProductFromCart(productId)),
   emptyCart: () => dispatch(emptyCart()),
+  addProductToCart: (productId: number, qte: number) =>
+    dispatch(addProductToCart(productId, qte)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart)

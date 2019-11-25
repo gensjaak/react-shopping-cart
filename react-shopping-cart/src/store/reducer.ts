@@ -7,7 +7,8 @@ import {
   IRemoveProductFromCartAction,
   EMPTY_CART,
 } from './actions'
-import { StoreState, ProductType } from './types'
+import { StoreState, ProductType, CartProductType } from './types'
+import { getItem, CART_STORAGE_KEY } from '../storage'
 
 // Initial state of store
 const initialState: StoreState = {
@@ -131,6 +132,7 @@ const reducer = (
         },
       }
 
+    // By default, if not action, return state unchanged
     default:
       return state
   }
