@@ -1,5 +1,5 @@
 import React, { Component, Dispatch } from 'react'
-import { Page, Layout, Card, ResourceList } from '@shopify/polaris'
+import { Page, Layout, Card, ResourceList, Filters } from '@shopify/polaris'
 import ProductItem from './components/ProductItem'
 import Cart from './components/CartComponent'
 import { connect } from 'react-redux'
@@ -12,7 +12,11 @@ type DispatchProps = {
   addProductToCart: (productId: number, qte: number) => void
 }
 
-class App extends Component<AppProps, {}> {
+class App extends Component<AppProps> {
+  state = {
+    searchProducts: '',
+  }
+
   constructor(props: AppProps) {
     super(props)
 
@@ -23,7 +27,37 @@ class App extends Component<AppProps, {}> {
     this.props.addProductToCart(productId, qte)
   }
 
+  handleQueryValueChange(value: string) {
+    this.setState({
+      searchProducts: value,
+    })
+  }
+
+  handleQueryValueRemove() {
+    this.setState({ searchProducts: '' })
+  }
+
+  handleClearAll() {
+    this.handleQueryValueRemove()
+  }
+
   render() {
+    const filteredProducts = this.props.products.filter(_ => {
+      const searchIn = _.description.toLowerCase() + _.name.toLowerCase()
+
+      return searchIn.includes(this.state.searchProducts.toLowerCase())
+    })
+
+    const filterControl = (
+      <Filters
+        filters={[]}
+        queryValue={this.state.searchProducts}
+        onQueryChange={this.handleQueryValueChange.bind(this)}
+        onQueryClear={this.handleQueryValueRemove.bind(this)}
+        onClearAll={this.handleClearAll.bind(this)}
+      ></Filters>
+    )
+
     return (
       <Page title="React Shopping Cart">
         <Layout>
@@ -32,7 +66,8 @@ class App extends Component<AppProps, {}> {
             <Card>
               <ResourceList
                 resourceName={{ singular: 'customer', plural: 'customers' }}
-                items={this.props.products}
+                items={filteredProducts}
+                filterControl={filterControl}
                 renderItem={item => (
                   <ProductItem
                     _={item}

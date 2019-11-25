@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Avatar, TextStyle, ResourceList } from '@shopify/polaris'
+import { Avatar, TextStyle, ResourceList, ResourceItem } from '@shopify/polaris'
 
 interface ProductItemProps {
   _: {
@@ -21,29 +21,29 @@ export default class ProductItem extends Component<ProductItemProps> {
     const { id, name, description } = this.props._
     const { onAddToCart } = this.props
 
-    const media = <Avatar key={id} customer={true} size="medium" name={name} />
+    const media = <Avatar customer size="medium" name={name} />
     const shortcutActions = [
       {
-        content: 'Add to basket (+1)',
+        content: 'Add to cart(+1)',
+        accessibilityLabel: `Add ${name} to cart`,
         onAction: () => onAddToCart(id, 1),
       },
     ]
 
     return (
       // @ts-ignore
-      <ResourceList.Item
+      <ResourceItem
         id={id.toString()}
         media={media}
         accessibilityLabel={`View details for ${name}`}
         shortcutActions={shortcutActions}
-        persistActions={true}
-        onClick={console.log}
+        persistActions
       >
         <h3>
           <TextStyle variation="strong">{name}</TextStyle>
         </h3>
         <div>{description}</div>
-      </ResourceList.Item>
+      </ResourceItem>
     )
   }
 }

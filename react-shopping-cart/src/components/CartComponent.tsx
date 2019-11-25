@@ -25,7 +25,7 @@ class CartComponent extends Component<CartProps> {
     return (
       <Card
         title="Basket"
-        secondaryFooterAction={{ content: 'Cancel cart' }}
+        secondaryFooterActions={[{ content: 'Cancel cart' }]}
         primaryFooterAction={{ content: 'Pay' }}
       >
         <Card.Section title="Items">
