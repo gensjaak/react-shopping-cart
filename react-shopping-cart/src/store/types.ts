@@ -38,5 +38,5 @@ export interface CartType {
 export interface StoreState {
   products: Array<ProductType>
   cart: CartType
-  currency: CurrencyType
+  currency: CurrencyType | any
 }

@@ -8,6 +8,8 @@ import {
   EMPTY_CART,
   UPDATE_CURRENCY,
   UpdateCurrencyAction,
+  UpdateCurrenciesAction,
+  UPDATE_CURRENCIES,
 } from './actions'
 import {
   StoreState,
@@ -31,47 +33,7 @@ const initialState: StoreState = {
     ],
     totalAmountIncludingTaxes: 0,
   },
-  currency: {
-    base: 'EUR',
-    selected: {
-      name: 'EUR',
-      symbol: '€',
-      value: 1,
-      showSymbolAtLeft: false,
-    },
-    rates: [
-      {
-        name: 'EUR',
-        symbol: '€',
-        value: 1,
-        showSymbolAtLeft: false,
-      },
-      {
-        name: 'CAD',
-        symbol: 'CA$',
-        value: 1.4648,
-        showSymbolAtLeft: true,
-      },
-      {
-        name: 'HKD',
-        symbol: 'HK$',
-        value: 8.6164,
-        showSymbolAtLeft: true,
-      },
-      {
-        name: 'USD',
-        symbol: '$',
-        value: 1.1008,
-        showSymbolAtLeft: true,
-      },
-      {
-        name: 'GBP',
-        symbol: '£',
-        value: 0.85515,
-        showSymbolAtLeft: true,
-      },
-    ],
-  },
+  currency: null,
 }
 
 // Calculate total price
@@ -243,7 +205,7 @@ const reducer = (
     // Updates the selected currency
     case UPDATE_CURRENCY:
       const updateCurrencyAction = action as UpdateCurrencyAction
-      const selectedCurrency = state.currency.rates.find(
+      const selectedCurrency = (state.currency as CurrencyType).rates.find(
         _ => _.name === updateCurrencyAction.payload
       ) as CurrencyRateType
 
@@ -253,6 +215,13 @@ const reducer = (
           ...state.currency,
           selected: selectedCurrency,
         },
+      }
+
+    case UPDATE_CURRENCIES:
+      const updateCurrenciesAction = action as UpdateCurrenciesAction
+      console.log('Reducer called with', updateCurrenciesAction.payload)
+      return {
+        ...state,
       }
 
     // By default, if not action, return state unchanged
