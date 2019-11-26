@@ -1,0 +1,9 @@
+.Polaris-Page__Content > .Polaris-Layout {
+  position: relative;
+}
+
+.Polaris-Layout > .Polaris-Labelled--hidden {
+  position: absolute;
+  top: -32px;
+  right: 0;
+}

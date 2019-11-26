@@ -1,13 +1,22 @@
 import {
   FETCH_PRODUCTS,
   ADD_PRODUCT_TO_CART,
-  IAddProductToCartAction,
+  AddProductToCartAction,
   AppActions,
   REMOVE_PRODUCT_FROM_CART,
-  IRemoveProductFromCartAction,
+  RemoveProductFromCartAction,
   EMPTY_CART,
+  UPDATE_CURRENCY,
+  UpdateCurrencyAction,
 } from './actions'
-import { StoreState, ProductType, CartProductType, TaxeType } from './types'
+import {
+  StoreState,
+  ProductType,
+  CartProductType,
+  TaxeType,
+  CurrencyType,
+  CurrencyRateType,
+} from './types'
 
 // Initial state of store
 const initialState: StoreState = {
@@ -21,6 +30,47 @@ const initialState: StoreState = {
       },
     ],
     totalAmountIncludingTaxes: 0,
+  },
+  currency: {
+    base: 'EUR',
+    selected: {
+      name: 'EUR',
+      symbol: '€',
+      value: 1,
+      showSymbolAtLeft: false,
+    },
+    rates: [
+      {
+        name: 'EUR',
+        symbol: '€',
+        value: 1,
+        showSymbolAtLeft: false,
+      },
+      {
+        name: 'CAD',
+        symbol: 'CA$',
+        value: 1.4648,
+        showSymbolAtLeft: true,
+      },
+      {
+        name: 'HKD',
+        symbol: 'HK$',
+        value: 8.6164,
+        showSymbolAtLeft: true,
+      },
+      {
+        name: 'USD',
+        symbol: '$',
+        value: 1.1008,
+        showSymbolAtLeft: true,
+      },
+      {
+        name: 'GBP',
+        symbol: '£',
+        value: 0.85515,
+        showSymbolAtLeft: true,
+      },
+    ],
   },
 }
 
@@ -116,7 +166,7 @@ const reducer = (
     case ADD_PRODUCT_TO_CART:
       // If the product was already in the cart => inc(qte)
       // Else add it
-      const addAction = action as IAddProductToCartAction
+      const addAction = action as AddProductToCartAction
       let alreadyInCart = false
       const updatedItems = [...state.cart.items].map(_ => {
         if (_.productId === addAction.payload.productId) {
@@ -151,7 +201,7 @@ const reducer = (
     case REMOVE_PRODUCT_FROM_CART:
       // dec product quantity in the cart
       // If, after that, the quantity is lower or eq to 0, remove it
-      const removeAction = action as IRemoveProductFromCartAction
+      const removeAction = action as RemoveProductFromCartAction
       totalAmountIncludingTaxes = 0
       const newItems = [...state.cart.items]
         .map(_ => {
@@ -187,6 +237,21 @@ const reducer = (
           ...state.cart,
           items: [],
           totalAmountIncludingTaxes: 0,
+        },
+      }
+
+    // Updates the selected currency
+    case UPDATE_CURRENCY:
+      const updateCurrencyAction = action as UpdateCurrencyAction
+      const selectedCurrency = state.currency.rates.find(
+        _ => _.name === updateCurrencyAction.payload
+      ) as CurrencyRateType
+
+      return {
+        ...state,
+        currency: {
+          ...state.currency,
+          selected: selectedCurrency,
         },
       }
 

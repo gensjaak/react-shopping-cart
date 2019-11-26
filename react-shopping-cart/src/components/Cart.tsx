@@ -6,6 +6,7 @@ import {
   StoreState,
   ProductType,
   CartProductType,
+  CurrencyRateType,
 } from '../store/types'
 import {
   removeProductFromCart,
@@ -13,6 +14,7 @@ import {
   addProductToCart,
 } from '../store/actions'
 import { getItem, CART_STORAGE_KEY } from '../storage'
+import { priceFromCurrency } from '../fn'
 
 // Required props to render component
 interface Props {
@@ -24,6 +26,9 @@ interface Props {
 
   // Allows cart to persist items
   allowCache: boolean
+
+  // Selected currency
+  selectedCurrency: CurrencyRateType
 
   // Method to handle remove product request
   removeProductFromCart: (productId: number) => void
@@ -66,12 +71,18 @@ class Cart extends Component<Props, {}> {
     // Retrieve needed properties
     const { items, taxes, totalAmountIncludingTaxes } = this.props.cart
 
+    // Get currency
+    const { selectedCurrency } = this.props
+
     if (items.length) {
       return (
         <Card
           title="Basket"
           secondaryFooterActions={[
-            { content: 'Cancel cart', onAction: () => this.cancelCart() },
+            {
+              content: 'Cancel cart',
+              onAction: () => this.cancelCart(),
+            },
           ]}
           primaryFooterAction={{ content: 'Pay' }}
         >
@@ -83,8 +94,15 @@ class Cart extends Component<Props, {}> {
                   <em>{_.qte}</em> ×{' '}
                   <strong>{this.getProduct(_.productId).name}</strong>
                   <br />
+                  <br />
                   Unit price:{' '}
-                  <strong>{this.getProduct(_.productId).price}€</strong>
+                  <strong>
+                    {priceFromCurrency(
+                      this.getProduct(_.productId).price,
+                      selectedCurrency
+                    )}
+                  </strong>
+                  <br />
                   <br />
                   <Button
                     plain
@@ -105,11 +123,21 @@ class Cart extends Component<Props, {}> {
             <List>
               {taxes.map(tax => (
                 <List.Item key={tax.name}>
-                  TVA {tax.name}% : {tax.value.toFixed(2)}€
+                  TVA {tax.name}% :{' '}
+                  {priceFromCurrency(
+                    Number(tax.value.toFixed(2)),
+                    selectedCurrency
+                  )}
                 </List.Item>
               ))}
               <List.Item>
-                <strong>{totalAmountIncludingTaxes.toFixed(2)}€ TTC</strong>
+                <strong>
+                  {priceFromCurrency(
+                    Number(totalAmountIncludingTaxes.toFixed(2)),
+                    selectedCurrency
+                  )}{' '}
+                  TTC
+                </strong>
               </List.Item>
             </List>
           </Card.Section>
@@ -129,6 +157,7 @@ class Cart extends Component<Props, {}> {
 const mapStateToProps = (state: StoreState) => ({
   products: state.products,
   cart: state.cart,
+  selectedCurrency: state.currency.selected,
 })
 
 // Make remove product action (from store) avaible under props

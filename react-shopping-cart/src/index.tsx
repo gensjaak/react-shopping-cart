@@ -7,11 +7,12 @@ import store from './store'
 import { Provider } from 'react-redux'
 import enTranslations from '@shopify/polaris/locales/en.json'
 import '@shopify/polaris/styles.css'
+import './App.css'
 
 ReactDOM.render(
   <Provider store={store}>
     <AppProvider i18n={enTranslations}>
-      <App />
+      <App supportsCurrency={true} />
     </AppProvider>
   </Provider>,
   document.getElementById('root')

@@ -16,6 +16,19 @@ export interface TaxeType {
   value: number
 }
 
+export interface CurrencyRateType {
+  name: string
+  symbol: string
+  value: number
+  showSymbolAtLeft: boolean
+}
+
+export interface CurrencyType {
+  base: string
+  selected: CurrencyRateType
+  rates: Array<CurrencyRateType>
+}
+
 export interface CartType {
   items: Array<CartProductType>
   taxes: Array<TaxeType>
@@ -25,4 +38,5 @@ export interface CartType {
 export interface StoreState {
   products: Array<ProductType>
   cart: CartType
+  currency: CurrencyType
 }
