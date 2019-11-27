@@ -54,12 +54,15 @@ class Catalogue extends Component<Props & Actions, State> {
 
   render() {
     // Filter products based on the query value
-    const filteredProducts = this.props.products.filter(_ => {
-      // _.description and _.name are the search scope
-      const searchIn = _.description.toLowerCase() + _.name.toLowerCase()
-
-      return searchIn.includes(this.state.search.toLowerCase())
-    })
+    const filteredProducts = this.props.products.filter(
+      ({ description, name }) => {
+        // description and name are the search scope
+        return (
+          description.toLowerCase().includes(this.state.search.toLowerCase()) ||
+          name.toLowerCase().includes(this.state.search.toLowerCase())
+        )
+      }
+    )
 
     // Provides UI and connectors for filtering products
     const filterControl = (

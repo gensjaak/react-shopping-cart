@@ -14,7 +14,6 @@ import {
   ProductType,
   CartProductType,
   TaxeType,
-  CurrencyType,
   CurrencyRateType,
 } from './types'
 

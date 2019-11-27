@@ -1,4 +1,5 @@
 import { Middleware, MiddlewareAPI, Dispatch } from 'redux'
+
 import {
   AppActions,
   ADD_PRODUCT_TO_CART,

@@ -94,7 +94,6 @@ class Cart extends Component<Props, {}> {
                   <em>{_.qte}</em> ×{' '}
                   <strong>{this.getProduct(_.productId).name}</strong>
                   <br />
-                  <br />
                   Unit price:{' '}
                   <strong>
                     {priceFromCurrency(
@@ -102,7 +101,6 @@ class Cart extends Component<Props, {}> {
                       selectedCurrency
                     )}
                   </strong>
-                  <br />
                   <br />
                   <Button
                     plain
@@ -113,6 +111,8 @@ class Cart extends Component<Props, {}> {
                   >
                     Remove (-1)
                   </Button>
+                  <br />
+                  <br />
                 </List.Item>
               ))}
             </List>

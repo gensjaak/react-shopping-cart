@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Avatar, TextStyle, ResourceItem } from '@shopify/polaris'
+
 import { ProductType, StoreState, CurrencyRateType } from '../store/types'
 import { connect } from 'react-redux'
 import { priceFromCurrency } from './../fn'
